@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kira Gaji</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a href="index.html">
+      <h1>Kira Gaji</h1>
+  </a>
+
+    <div class="work-hours">
+      <label for="date">Date:</label>
+      <input type="date" id="date" />
+      <label for="start-time">Start Time:</label>
+      <input type="time" id="start-time" />
+      <label for="end-time">End Time:</label>
+      <input type="time" id="end-time" />
+      <label for="entry-type">Entry Type:</label>
+      <select id="entry-type">
+        <option value="normal">Normal</option>
+        <option value="overtime">Overtime (x 1.5)</option>
+        <option value="sunday_holiday">Sunday/Public Holiday(x 2.0)</option>
+      </select>
+      <button id="add-entry">Add Entry</button>
+    </div>
+
+    <div class="entries">
+      <h2>
+        Entries
+        <button id="share-button" title="Share">Share Entries
+        </button>
+      </h2>
+      <table id="entries-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Entry Type</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="entries-list">
+          <!-- Entries will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="calculate">
+      <label for="hourly-rate">Hourly Rate:</label>
+      <input type="number" id="hourly-rate" placeholder="Enter hourly rate" />
+      <button id="calculate-salary">Calculate Salary</button>
+      <p>Total Salary: <span id="total-salary">RM0</span></p>
+    </div>
+
+    <a href="https://wmsa.me" class="by">
+      <span style="vertical-align: middle">by </span
+      ><img
+        style="
+          width: 25px;
+          height: 25px;
+          border-radius: 100%;
+          vertical-align: middle;
+        "
+        src="/assets/favicon.svg"
+      />
+      <span style="vertical-align: middle">wmsa</span>
+    </a>
+
+    <script src="script1.js"></script>
+
+  </body>
+</html>

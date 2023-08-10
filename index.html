@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kira Gaji</title>
+    <title>Kira Gaji | Your Personal Earning Tracker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -22,73 +23,238 @@
       href="assets/favicon-16x16.png"
     />
     <link rel="manifest" href="assets/site.webmanifest" />
-    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap"
+    />
+    <link rel="stylesheet" href="purged.css" />
   </head>
   <body>
-    <a href="index.html">
-      <h1>Kira Gaji</h1>
-  </a>
-
-    <div class="work-hours">
-      <label for="date">Date:</label>
-      <input type="date" id="date" />
-      <label for="start-time">Start Time:</label>
-      <input type="time" id="start-time" />
-      <label for="end-time">End Time:</label>
-      <input type="time" id="end-time" />
-      <label for="entry-type">Entry Type:</label>
-      <select id="entry-type">
-        <option value="normal">Normal</option>
-        <option value="overtime">Overtime (x 1.5)</option>
-        <option value="sunday_holiday">Sunday/Public Holiday(x 2.0)</option>
-      </select>
-      <button id="add-entry">Add Entry</button>
+    <div class="content">
+      <aside>
+        <img
+          src="logo.png"
+          alt="Butn- call to action Notion buttons"
+          width="130"
+          height="90"
+          class="block mb-2 mx-auto"
+        />
+        <p class="text-center text-sm mb-2">
+          Your Personal Earning Tracker
+        </p>
+        <section class="item">
+          <ul>
+            <li class="text-sm">CALCULATE</li>
+            <li class="flex-auto"></li>
+            <li><button class="clickable w-8 h-8 collapse-button">+</button></li>
+          </ul>
+          <div class="collapse-content mt-3">
+            <div>
+              <label>Date:</label>
+              <input type="date" id="date" />
+            </div>
+            <div>
+              <label>Start time:</label>
+              <input type="time" id="start-time" />
+            </div>
+            <div>
+              <label>End time:</label>
+              <input type="time" id="end-time" />
+            </div>
+            <label for="entry-type">Entry Type:</label>
+            <select id="entry-type">
+              <option value="" selected="" disabled="" hidden="">Choose here</option>
+              <option value="normal">Normal</option>
+              <option value="overtime">Overtime (x 1.5)</option>
+              <option value="sunday_holiday">Sunday/Public Holiday(x 2.0)</option>
+            </select>
+            <button id="add-entry" style="margin-top: 0.75rem;
+            font-weight: 400;
+            color: #fff;
+            background-color: #e16259;
+            --hover-text-color: #ffffff;
+            --hover-bg-color: #cf534a;
+            border: 0 solid #000;
+            border-radius: 4px;
+            box-shadow: 2px 1px 0 0 rgb(15 15 15 / 10%);
+            padding: 6px 8px;">Add Entry</button>
+          </div>
+        </section>
+        <section class="item">
+          <ul>
+            <li class="text-sm">SETTINGS<span
+              class="bg-yellow-700 text-white text-xs px-2 ml-2 py-1 rounded-full"
+              >WIP</span
+            ></label
+          ></li>
+            <li class="flex-auto"></li>
+            <li><button class="clickable w-8 h-8">+</button></li>
+          </ul>
+        </section>
+        <section class="item">
+          <ul>
+            <li class="text-sm">HOW TO<span
+              class="bg-yellow-700 text-white text-xs px-2 ml-2 py-1 rounded-full"
+              >WIP</span</li>
+            <li class="flex-auto"></li>
+            <li><button class="clickable w-8 h-8">+</button></li>
+          </ul>
+        </section>
+        <section class="item">
+          <ul>
+            <li class="text-sm">ABOUT</li>
+            <li class="flex-auto"></li>
+            <li><button class="clickable w-8 h-8 collapse-button">+</button></li>
+          </ul>
+          <div class="collapse-content collapsed">
+            <p class="text-sm mb-2">Welcome to Kira Gaji, your personal earning tracker. This simple tool helps you keep track of your work hours and calculate your salary easily. Whether you're working normal hours or overtime, Kira Gaji has you covered.</p>
+            <p class="text-sm mb-2">Stay organized, efficient, and informed about your earnings. Start using Kira Gaji today and take control of your work finances.</p>
+          </div>
+        </section>
+      </aside>
+      <section
+        class="block relative overflow-x-hidden flex items-center w-full bg-gray-200 w-9/12 p-5"
+      >
+        <div
+          class="compSlider"
+          style="background: #fff; color: #2f3437"
+          data-v-e3a5b320
+        >
+          <div class="browserTopBar" data-v-e3a5b320>
+            <ul class="py-4" data-v-e3a5b320>
+              <li class="bg-red-400" data-v-e3a5b320></li>
+              <li class="bg-yellow-400" data-v-e3a5b320></li>
+              <li class="bg-green-400" data-v-e3a5b320></li>
+            </ul>
+            <div class="flex-auto" data-v-e3a5b320></div>
+          </div>
+          <h6 class="text-2xl font-bold mb-4" data-v-e3a5b320>
+            Entries 👇
+          </h6>
+          <table id="entries-table" style="width: 100%; margin-bottom: 4px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Entry Type</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="entries-list">
+              <!-- Entries will be dynamically added here -->
+            </tbody>
+          </table>
+          <div class="calculate">
+            <input type="number" id="hourly-rate" style="display: block; margin: 0 auto; text-align: center; border: 1px solid rgba(0, 0, 0, 0.2);" placeholder="🕒 Enter hourly rate" />             
+            <div
+              id="calculate-salary"
+              class="w-full mt-3"
+              style="text-align: center; background-color: #fff" 
+            >
+              <a
+                class="btnPreview"
+                style="
+                  font-size: 18px;
+                  --font-family: Poppins;
+                  font-weight: 400;
+                  color: #fff;
+                  background-color: #e16259;
+                  --hover-text-color: #ffffff;
+                  --hover-bg-color: #cf534a;
+                  border: 0 solid #000;
+                  border-radius: 4px;
+                  box-shadow: 2px 1px 0 0 rgb(15 15 15 / 10%);
+                  padding: 6px 8px;
+                "
+                >
+                Calculate Salary
+              </a>
+            </div>
+            <p style="text-align: center; margin-top: 4px;" >Total Salary: <span class="font-bold" id="total-salary">RM0</span></p>
+          </div>
+        </div>
+      </section>
+                  <!-- <div class="mb-3">
+              <label for=""
+                >Open link in new Tab
+                <span
+                  class="bg-yellow-700 text-white text-xs px-2 ml-2 py-1 rounded-full"
+                  >NEW</span
+                ></label
+              >
+              <div
+                value="0"
+                class="flex justify-between items-center cursor-pointer"
+                data-v-0268a9b0
+              >
+                <div
+                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
+                  data-v-0268a9b0
+                >
+                  <div
+                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
+                    data-v-0268a9b0
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="">Dark Mode</label>
+              <div
+                value="0"
+                class="flex justify-between items-center cursor-pointer"
+                data-v-0268a9b0
+              >
+                <div
+                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
+                  data-v-0268a9b0
+                >
+                  <div
+                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
+                    data-v-0268a9b0
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="">Transparent Background</label>
+              <div
+                value="0"
+                class="flex justify-between items-center cursor-pointer"
+                data-v-0268a9b0
+              >
+                <div
+                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
+                  data-v-0268a9b0
+                >
+                  <div
+                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
+                    data-v-0268a9b0
+                  ></div>
+                </div>
+              </div>
+            </div> -->
     </div>
 
-    <div class="entries">
-      <h2>
-        Entries
-        <button id="share-button" title="Share">Share Entries
-        </button>
-      </h2>
-      <table id="entries-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Entry Type</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody id="entries-list">
-          <!-- Entries will be dynamically added here -->
-        </tbody>
-      </table>
-    </div>
+    <script src="output.js"></script>
 
-    <div class="calculate">
-      <label for="hourly-rate">Hourly Rate:</label>
-      <input type="number" id="hourly-rate" placeholder="Enter hourly rate" />
-      <button id="calculate-salary">Calculate Salary</button>
-      <p>Total Salary: <span id="total-salary">RM0</span></p>
-    </div>
+    <script>
+    // Get all collapse buttons and their corresponding content
+    const collapseButtons = document.querySelectorAll('.collapse-button');
+    const collapseContents = document.querySelectorAll('.collapse-content');
 
-    <a href="https://wmsa.me" class="by">
-      <span style="vertical-align: middle">by </span
-      ><img
-        style="
-          width: 25px;
-          height: 25px;
-          border-radius: 100%;
-          vertical-align: middle;
-        "
-        src="/assets/favicon.svg"
-      />
-      <span style="vertical-align: middle">wmsa</span>
-    </a>
-
-    <script src="script1.js"></script>
+    // Add event listeners for each collapse button
+    collapseButtons.forEach((collapseButton, index) => {
+      collapseButton.addEventListener('click', () => {
+        if (collapseContents[index].classList.contains('collapsed')) {
+          collapseContents[index].classList.remove('collapsed');
+        } else {
+          collapseContents[index].classList.add('collapsed');
+        }
+      });
+    });
+    </script>
 
   </body>
 </html>
