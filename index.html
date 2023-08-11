@@ -28,6 +28,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap"
     />
     <link rel="stylesheet" href="purged.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>        
   </head>
   <body>
     <div class="content">
@@ -112,7 +114,7 @@
           </div>
         </section>
       </aside>
-      <section
+      <section 
         class="block relative overflow-x-hidden flex items-center w-full bg-gray-200 w-9/12 p-5"
       >
         <div
@@ -126,11 +128,15 @@
               <li class="bg-yellow-400" data-v-e3a5b320></li>
               <li class="bg-green-400" data-v-e3a5b320></li>
             </ul>
-            <div class="flex-auto" data-v-e3a5b320></div>
+            <div class="flex-auto" data-v-e3a5b320=""></div>
+              <button id="delete-all-entries" class="delete-all-button">
+                Clear All
+              </button>
           </div>
           <h6 class="text-2xl font-bold mb-4" data-v-e3a5b320>
-            Entries 👇
+            <span id="entries-count">0</span> Entries 👇
           </h6>
+          <div id="entries-container" class="entries-container">
           <table id="entries-table" style="width: 100%; margin-bottom: 4px; table-layout: fixed;">
             <thead>
               <tr>
@@ -138,19 +144,20 @@
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Entry Type</th>
-                <th>Delete</th>
+                <!-- <th>Delete</th> -->
               </tr>
             </thead>
-            <tbody id="entries-list">
+            <tbody id="entries-list" style="text-align: center;">
               <!-- Entries will be dynamically added here -->
             </tbody>
           </table>
+        </div>
           <div class="calculate">
-            <input type="number" id="hourly-rate" style="display: block; margin: 0 auto; text-align: center; border: 1px solid rgba(0, 0, 0, 0.2);" placeholder="🕒 Enter hourly rate" />             
+            <input type="number" id="hourly-rate" style="display: block; margin: 0.75rem auto 0 auto; text-align: center; border: 1px solid rgba(0, 0, 0, 0.2);" placeholder="🕒 Enter hourly rate" />             
             <div
               id="calculate-salary"
               class="w-full mt-3"
-              style="text-align: center; background-color: #fff" 
+              style="text-align: center; " 
             >
               <a
                 class="btnPreview"
@@ -175,7 +182,7 @@
           </div>
         </div>
       </section>
-                  <!-- <div class="mb-3">
+      <!-- <div class="mb-3">
               <label for=""
                 >Open link in new Tab
                 <span
@@ -235,26 +242,25 @@
                 </div>
               </div>
             </div> -->
+      <script>
+        // Get all collapse buttons and their corresponding content
+        const collapseButtons = document.querySelectorAll('.collapse-button');
+        const collapseContents = document.querySelectorAll('.collapse-content');
+    
+        // Add event listeners for each collapse button
+        collapseButtons.forEach((collapseButton, index) => {
+          collapseButton.addEventListener('click', () => {
+            if (collapseContents[index].classList.contains('collapsed')) {
+              collapseContents[index].classList.remove('collapsed');
+            } else {
+              collapseContents[index].classList.add('collapsed');
+            }
+          });
+        });
+        </script>
     </div>
 
     <script src="output.js"></script>
-
-    <script>
-    // Get all collapse buttons and their corresponding content
-    const collapseButtons = document.querySelectorAll('.collapse-button');
-    const collapseContents = document.querySelectorAll('.collapse-content');
-
-    // Add event listeners for each collapse button
-    collapseButtons.forEach((collapseButton, index) => {
-      collapseButton.addEventListener('click', () => {
-        if (collapseContents[index].classList.contains('collapsed')) {
-          collapseContents[index].classList.remove('collapsed');
-        } else {
-          collapseContents[index].classList.add('collapsed');
-        }
-      });
-    });
-    </script>
 
   </body>
 </html>

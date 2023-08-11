@@ -42,7 +42,7 @@ select {
 
 h6,
 p {
-  margin: 0;
+  margin: 0 auto 0.75rem auto
 }
 button {
   background-color: transparent;
@@ -107,6 +107,13 @@ input,
 select {
   padding: 0;
   line-height: inherit;
+}
+
+.entries-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 img {

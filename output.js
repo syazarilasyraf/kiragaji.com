@@ -21,7 +21,20 @@ calculateSalaryButton.addEventListener("click", () => {
     const hourlyRate = parseFloat(hourlyRateInput.value);
 
     if (isNaN(hourlyRate)) {
-        alert("Please enter a valid hourly rate.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Hourly Rate',
+            text: 'Please enter a valid hourly rate.',
+        });
+        return;
+    }
+
+    if (entries.length === 0) {
+        Swal.fire({
+            icon: 'info',
+            title: 'No Entries',
+            text: 'There are no entries to calculate.',
+        });
         return;
     }
 
@@ -49,6 +62,12 @@ calculateSalaryButton.addEventListener("click", () => {
 
     const totalSalary = normalSalary + overtimeSalary + sundayHolidaySalary;
     totalSalaryOutput.textContent = `RM${totalSalary.toFixed(2)}`;
+
+    Swal.fire({
+        icon: 'info',
+        title: 'Total Salary',
+        text: `Your total salary is RM${totalSalary.toFixed(2)}`,
+    });
 });
 
 addEntryButton.addEventListener("click", () => {
@@ -56,9 +75,58 @@ addEntryButton.addEventListener("click", () => {
     const startTime = document.getElementById("start-time").value;
     const endTime = document.getElementById("end-time").value;
     const entryType = document.getElementById("entry-type").value;
-    
+    const hourlyRateInput = document.getElementById("hourly-rate");
+    const hourlyRate = parseFloat(hourlyRateInput.value);
+
+    // Check for missing or invalid input fields
+    if (!date) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Date',
+            text: 'Please enter a valid date.',
+        });
+        return;
+    }
+
+    if (!startTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Start Time',
+            text: 'Please enter a valid start time.',
+        });
+        return;
+    }
+
+    if (!endTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing End Time',
+            text: 'Please enter a valid end time.',
+        });
+        return;
+    }
+
+    if (!entryType) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Entry Type',
+            text: 'Please choose an entry type.',
+        });
+        return;
+    }
+
+    // If all input is valid, proceed to add the entry
     entries.push({ date, startTime, endTime, entryType });
     updateEntriesList();
+    
+    // Show success pop-up
+    Swal.fire({
+        icon: 'success',
+        title: 'Entry Added',
+        text: 'The entry has been successfully added!',
+        showConfirmButton: false,
+        timer: 1000,
+    });
 });
 
 function updateEntriesList() {
@@ -71,23 +139,59 @@ function updateEntriesList() {
             <td>${entry.startTime}</td>
             <td>${entry.endTime}</td>
             <td>${getEntryTypeText(entry.entryType)}</td>
-            <td><button class="delete-entry" data-index="${index}">❌</button></td>
+            <td><button class="delete-entry" data-index="${index}">⌫</button></td>
         `;
         entriesList.appendChild(row);
     });
+
+    const entriesCountElement = document.getElementById("entries-count");
+    entriesCountElement.textContent = entries.length; // Update the count of entries
 
     const deleteButtons = document.querySelectorAll(".delete-entry");
     deleteButtons.forEach(button => {
         button.addEventListener("click", () => {
             const index = parseInt(button.getAttribute("data-index"));
-            entries.splice(index, 1);
-            updateEntriesList();
-            saveEntriesToLocalStorage(); // Save updated entries to Local Storage
+            
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete Entry?',
+                text: 'Are you sure you want to delete this entry?',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#e74c3c',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    entries.splice(index, 1);
+                    updateEntriesList();
+                    saveEntriesToLocalStorage();
+                }
+            });
         });
     });
 
-    saveEntriesToLocalStorage(); // Save entries to Local Storage
+    saveEntriesToLocalStorage();
 }
+
+const deleteAllEntriesButton = document.getElementById("delete-all-entries");
+
+deleteAllEntriesButton.addEventListener("click", () => {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Delete All Entries?',
+        text: 'Are you sure you want to delete all entries?',
+        showCancelButton: true,
+        confirmButtonText: 'Delete All',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#e74c3c',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            entries = []; // Clear all entries
+            updateEntriesList();
+            saveEntriesToLocalStorage();
+        }
+    });
+});
 
 function saveEntriesToLocalStorage() {
     localStorage.setItem("entries", JSON.stringify(entries));
