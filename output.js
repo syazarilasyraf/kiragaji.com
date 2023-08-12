@@ -1,6 +1,6 @@
 function getEntryTypeText(entryType) {
     if (entryType === "normal") {
-        return "Normal Hours";
+        return "Normal";
     } else if (entryType === "overtime") {
         return "OT";
     } else if (entryType === "sunday_holiday") {
