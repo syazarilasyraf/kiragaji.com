@@ -2,9 +2,9 @@ function getEntryTypeText(entryType) {
     if (entryType === "normal") {
         return "Normal Hours";
     } else if (entryType === "overtime") {
-        return "Overtime";
+        return "OT";
     } else if (entryType === "sunday_holiday") {
-        return "Sunday/Public Holiday";
+        return "Sun/PH";
     }
     return "";
 }
