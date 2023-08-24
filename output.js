@@ -16,7 +16,16 @@ const totalSalaryOutput = document.getElementById("total-salary");
 
 let entries = [];
 
+let totalNormalHours = 0;
+let totalOvertimeHours = 0;
+let totalSundayHolidayHours = 0;
+let customRestHourDeduction = 0;
+
 calculateSalaryButton.addEventListener("click", () => {
+    totalNormalHours = 0;            // Reset these variables
+    totalOvertimeHours = 0;
+    totalSundayHolidayHours = 0;
+
     const hourlyRateInput = document.getElementById("hourly-rate");
     const hourlyRate = parseFloat(hourlyRateInput.value);
 
@@ -38,15 +47,51 @@ calculateSalaryButton.addEventListener("click", () => {
         return;
     }
 
-    let totalNormalHours = 0;
-    let totalOvertimeHours = 0;
-    let totalSundayHolidayHours = 0;
+    // Add custom rest hour deduction
+    const restHourSelect = document.getElementById("rest-hour");
+    const restHourValue = restHourSelect.value;
+    let customRestHourDeduction = 0;
 
+    if (restHourValue === "custom_hour") {
+        Swal.fire({
+            title: "Enter Custom Rest Hours",
+            input: "text",
+            inputLabel: "Hours",
+            inputPlaceholder: "Enter the number of hours to deduct",
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            cancelButtonText: "Cancel",
+            inputValidator: (value) => {
+                if (!value || isNaN(value) || parseFloat(value) < 0) {
+                    return "Please enter a valid number of hours to deduct.";
+                }
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Removed the 'let' keyword to update the outer variable
+                customRestHourDeduction = parseFloat(result.value);
+                // Proceed to calculate the salary with custom rest hour deduction
+                calculateSalary(hourlyRate, customRestHourDeduction);
+            }
+        });
+    } else {
+        // Default deduction only if it's not "sunday_holiday" and not "custom_hour"
+        const defaultDeduction = (restHourValue !== "sunday_holiday") ? 1 : 0;
+        calculateSalary(hourlyRate, defaultDeduction);
+    }
+});
+
+function calculateSalary(hourlyRate, customRestHourDeduction) {
     entries.forEach(entry => {
         const start = new Date(`2000-01-01T${entry.startTime}`);
         const end = new Date(`2000-01-01T${entry.endTime}`);
-        const hoursWorked = (end - start) / (1000 * 60 * 60);
+        let hoursWorked = (end - start) / (1000 * 60 * 60); // Use 'let' instead of 'const'
 
+        // // Deduct 1 hour by default for all types except "sunday_holiday"
+        // if (entry.entryType !== "sunday_holiday") {
+        //     // Ensure hoursWorked is not negative
+        //     hoursWorked = Math.max(hoursWorked - 1, 0);
+        // }
         if (entry.entryType === "normal") {
             totalNormalHours += hoursWorked;
         } else if (entry.entryType === "overtime") {
@@ -60,7 +105,9 @@ calculateSalaryButton.addEventListener("click", () => {
     const overtimeSalary = totalOvertimeHours * hourlyRate * 1.5;
     const sundayHolidaySalary = totalSundayHolidayHours * hourlyRate * 2;
 
-    const totalSalary = normalSalary + overtimeSalary + sundayHolidaySalary;
+    // Calculate the total salary with custom rest hour deduction
+    const totalSalary = (normalSalary + overtimeSalary + sundayHolidaySalary) - (customRestHourDeduction * hourlyRate);
+    
     totalSalaryOutput.textContent = `RM${totalSalary.toFixed(2)}`;
 
     Swal.fire({
@@ -68,7 +115,7 @@ calculateSalaryButton.addEventListener("click", () => {
         title: 'Total Salary',
         text: `Your total salary is RM${totalSalary.toFixed(2)}`,
     });
-});
+}
 
 addEntryButton.addEventListener("click", () => {
     const date = document.getElementById("date").value;

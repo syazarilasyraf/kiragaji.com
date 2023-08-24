@@ -70,6 +70,11 @@
               <option value="overtime">Overtime (x 1.5)</option>
               <option value="sunday_holiday">Sunday/Public Holiday(x 2.0)</option>
             </select>
+            <label for="rest-hour">Rest hour:</label>
+            <select id="rest-hour">
+              <option value="1_hour" selected>- 1 hour (default)</option>
+              <option value="custom_hour" disabled="">Custom hour</option>
+            </select>
             <button id="add-entry" style="margin-top: 0.75rem;
             font-weight: 400;
             color: #fff;
@@ -111,6 +116,8 @@
           <div class="collapse-content collapsed">
             <p class="text-sm mb-2">Welcome to Kira Gaji, your personal earning tracker. This simple tool helps you keep track of your work hours and calculate your salary easily. Whether you're working normal hours or overtime, Kira Gaji has you covered.</p>
             <p class="text-sm mb-2">Stay organized, efficient, and informed about your earnings. Start using Kira Gaji today and take control of your work finances.</p>
+            <p class="text-sm mb-2">This website entirely made by <a href="https://wmsa.me" style="color: blue; text-decoration: underline;">wmsa</a> for personal use.</p>
+            <p class="text-sm mb-2">Feel free to <a href="https://wmsa.me" style="color: blue; text-decoration: underline;">contact me</a> if you encounter any issues or need assistance with custom features.</p>
           </div>
         </section>
       </aside>
@@ -141,9 +148,9 @@
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Entry Type</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Entry</th>
                 <!-- <th>Delete</th> -->
               </tr>
             </thead>
@@ -256,6 +263,46 @@
               collapseContents[index].classList.add('collapsed');
             }
           });
+        });
+
+                // Find the #rest-hour select element
+        const restHourSelect = document.getElementById("rest-hour");
+
+        // Add an event listener to detect changes in the selected option
+        restHourSelect.addEventListener("change", () => {
+          const selectedOption = restHourSelect.value;
+
+          if (selectedOption === "custom_hour") {
+            // When "Custom hour" is selected, show a SweetAlert pop-up
+            Swal.fire({
+              title: "Custom Hour Deduction",
+              text: "Enter the number of hours to deduct:",
+              input: "number",
+              inputAttributes: {
+                min: 0, // Set the minimum value to 0
+                step: 0.5, // Set the step increment to 0.5 hours (adjust as needed)
+              },
+              showCancelButton: true,
+              confirmButtonText: "Deduct",
+              cancelButtonText: "Cancel",
+              inputValidator: (value) => {
+                if (value < 0) {
+                  return "Please enter a valid number of hours (0 or greater).";
+                }
+              },
+            }).then((result) => {
+              if (result.isConfirmed) {
+                const customHours = parseFloat(result.value);
+                // Handle the custom hour deduction here
+                // You can use the 'customHours' value as needed
+                // For example, update the total salary based on this deduction
+              } else {
+                // User canceled the operation
+              }
+              // Reset the select element to its default option
+              restHourSelect.value = "1_hour";
+            });
+          }
         });
         </script>
     </div>
