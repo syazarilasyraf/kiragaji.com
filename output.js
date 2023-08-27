@@ -1,3 +1,4 @@
+// Function to get the entry type text
 function getEntryTypeText(entryType) {
     if (entryType === "normal") {
         return "Normal";
@@ -9,26 +10,84 @@ function getEntryTypeText(entryType) {
     return "";
 }
 
+// DOM element references
 const addEntryButton = document.getElementById("add-entry");
 const calculateSalaryButton = document.getElementById("calculate-salary");
 const entriesList = document.getElementById("entries-list");
 const totalSalaryOutput = document.getElementById("total-salary");
 
+// Arrays and variables for data storage and calculations
 let entries = [];
-
 let totalNormalHours = 0;
 let totalOvertimeHours = 0;
 let totalSundayHolidayHours = 0;
 let customRestHourDeduction = 0;
 
-calculateSalaryButton.addEventListener("click", () => {
-    totalNormalHours = 0;            // Reset these variables
+// Object to store total hours worked for each entry type
+const totalHoursWorked = {
+    normal: 0,
+    overtime: 0,
+    sunday_holiday: 0,
+};
+
+// Function to calculate the salary
+function calculateSalary(hourlyRate, customRestHourDeduction) {
+    // Reset the total hours
+    totalNormalHours = 0;
     totalOvertimeHours = 0;
     totalSundayHolidayHours = 0;
 
+    entries.forEach(entry => {
+        const start = new Date(`2000-01-01T${entry.startTime}`);
+        const end = new Date(`2000-01-01T${entry.endTime}`);
+        let hoursWorked = (end - start) / (1000 * 60 * 60); // Hours worked for this entry
+
+        // Deduct 1 hour by default for all types except "overtime" and "sunday_holiday"
+        if (entry.entryType !== "overtime" && entry.entryType !== "sunday_holiday") {
+            hoursWorked -= 1;
+            // Ensure hoursWorked is not negative
+            hoursWorked = Math.max(hoursWorked, 0);
+        }
+
+        // Update the total hours worked for the respective entry type
+        totalHoursWorked[entry.entryType] += hoursWorked;
+
+        // Update the total hours for summary
+        if (entry.entryType === "normal") {
+            totalNormalHours += hoursWorked;
+        } else if (entry.entryType === "overtime") {
+            totalOvertimeHours += hoursWorked;
+        } else if (entry.entryType === "sunday_holiday") {
+            totalSundayHolidayHours += hoursWorked;
+        }
+    });
+
+    // Calculate the individual components of the salary
+    const normalSalary = totalNormalHours * hourlyRate;
+    const overtimeSalary = totalOvertimeHours * (hourlyRate * 1.5);
+    const sundayHolidaySalary = totalSundayHolidayHours * (hourlyRate * 2);
+
+    // Calculate the total salary with custom rest hour deduction
+    const totalSalary = normalSalary + overtimeSalary + sundayHolidaySalary ;
+
+    // Display the total salary
+    totalSalaryOutput.textContent = `RM${totalSalary.toFixed(2)}`;
+
+    // Show a confirmation popup
+    Swal.fire({
+        icon: 'info',
+        title: 'Total Salary',
+        text: `Your total salary is RM${totalSalary.toFixed(2)}`,
+    });
+}
+
+// Event listener for the "Calculate Salary" button
+calculateSalaryButton.addEventListener("click", () => {
+    // Get the hourly rate from the input
     const hourlyRateInput = document.getElementById("hourly-rate");
     const hourlyRate = parseFloat(hourlyRateInput.value);
 
+    // Validate the hourly rate
     if (isNaN(hourlyRate)) {
         Swal.fire({
             icon: 'error',
@@ -38,6 +97,7 @@ calculateSalaryButton.addEventListener("click", () => {
         return;
     }
 
+    // Check if there are entries to calculate
     if (entries.length === 0) {
         Swal.fire({
             icon: 'info',
@@ -50,7 +110,7 @@ calculateSalaryButton.addEventListener("click", () => {
     // Add custom rest hour deduction
     const restHourSelect = document.getElementById("rest-hour");
     const restHourValue = restHourSelect.value;
-    let customRestHourDeduction = 0;
+    customRestHourDeduction = 0;
 
     if (restHourValue === "custom_hour") {
         Swal.fire({
@@ -68,7 +128,7 @@ calculateSalaryButton.addEventListener("click", () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                // Removed the 'let' keyword to update the outer variable
+                // Update the custom rest hour deduction
                 customRestHourDeduction = parseFloat(result.value);
                 // Proceed to calculate the salary with custom rest hour deduction
                 calculateSalary(hourlyRate, customRestHourDeduction);
@@ -82,46 +142,87 @@ calculateSalaryButton.addEventListener("click", () => {
         // Deduct 1 hour by default for all types except "sunday_holiday"
         const defaultDeduction = selectedEntryType !== "sunday_holiday" ? 1 : 0;
 
+        // Calculate the salary with default rest hour deduction
         calculateSalary(hourlyRate, defaultDeduction);
     }
 });
 
-function calculateSalary(hourlyRate, customRestHourDeduction) {
-    entries.forEach(entry => {
+// Function to update the entries list
+function updateEntriesList() {
+    entriesList.innerHTML = "";
+
+    entries.forEach((entry, index) => {
         const start = new Date(`2000-01-01T${entry.startTime}`);
         const end = new Date(`2000-01-01T${entry.endTime}`);
-        let hoursWorked = (end - start) / (1000 * 60 * 60); // Use 'let' instead of 'const'
+        let hoursWorked = (end - start) / (1000 * 60 * 60); // Hours worked for this entry
 
-        // // Deduct 1 hour by default for all types except "sunday_holiday"
-        // if (entry.entryType !== "sunday_holiday") {
-        //     // Ensure hoursWorked is not negative
-        //     hoursWorked = Math.max(hoursWorked - 1, 0);
-        // }
-        if (entry.entryType === "normal") {
-            totalNormalHours += hoursWorked;
-        } else if (entry.entryType === "overtime") {
-            totalOvertimeHours += hoursWorked;
-        } else if (entry.entryType === "sunday_holiday") {
-            totalSundayHolidayHours += hoursWorked;
+        // Deduct 1 hour by default for all types except "overtime" and "sunday_holiday"
+        if (entry.entryType !== "overtime" && entry.entryType !== "sunday_holiday") {
+            hoursWorked -= 1;
+            // Ensure hoursWorked is not negative
+            hoursWorked = Math.max(hoursWorked, 0);
         }
+
+        // Update the total hours worked for the respective entry type
+        totalHoursWorked[entry.entryType] += hoursWorked;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${entry.date}</td>
+            <td>${entry.startTime}</td>
+            <td>${entry.endTime}</td>
+            <td>${getEntryTypeText(entry.entryType)}</td>
+            <td>${Math.round(hoursWorked)}</td> <!-- Display hours worked for this entry -->
+            <td><button class="delete-entry" data-index="${index}">⌫</button></td>
+        `;
+        entriesList.appendChild(row);
     });
 
-    const normalSalary = totalNormalHours * hourlyRate;
-    const overtimeSalary = totalOvertimeHours * hourlyRate * 1.5;
-    const sundayHolidaySalary = totalSundayHolidayHours * hourlyRate * 2;
+    const entriesCountElement = document.getElementById("entries-count");
+    entriesCountElement.textContent = entries.length; // Update the count of entries
 
-    // Calculate the total salary with custom rest hour deduction
-    const totalSalary = (normalSalary + overtimeSalary + sundayHolidaySalary) - (customRestHourDeduction * hourlyRate);
+    const deleteButtons = document.querySelectorAll(".delete-entry");
+
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const index = parseInt(button.getAttribute("data-index"));
     
-    totalSalaryOutput.textContent = `RM${totalSalary.toFixed(2)}`;
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete Entry?',
+                text: 'Are you sure you want to delete this entry?',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#e74c3c',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Deduct the deleted entry's hours from the respective entry type's total
+                    const deletedEntry = entries[index];
+                    const start = new Date(`2000-01-01T${deletedEntry.startTime}`);
+                    const end = new Date(`2000-01-01T${deletedEntry.endTime}`);
+                    let hoursWorked = (end - start) / (1000 * 60 * 60);
+    
+                    if (deletedEntry.entryType !== "sunday_holiday") {
+                        hoursWorked -= 1;
+                        hoursWorked = Math.max(hoursWorked, 0);
+                    }
+    
+                    totalHoursWorked[deletedEntry.entryType] -= hoursWorked;
+    
+                    // Remove the entry from the entries array
+                    entries.splice(index, 1);
+                    updateEntriesList();
+                    saveEntriesToLocalStorage();
+                }
+            });
+        });
+    });    
 
-    Swal.fire({
-        icon: 'info',
-        title: 'Total Salary',
-        text: `Your total salary is RM${totalSalary.toFixed(2)}`,
-    });
+    saveEntriesToLocalStorage();
 }
 
+// Event listener for the "Add Entry" button
 addEntryButton.addEventListener("click", () => {
     const date = document.getElementById("date").value;
     const startTime = document.getElementById("start-time").value;
@@ -181,52 +282,9 @@ addEntryButton.addEventListener("click", () => {
     });
 });
 
-function updateEntriesList() {
-    entriesList.innerHTML = "";
-
-    entries.forEach((entry, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${entry.date}</td>
-            <td>${entry.startTime}</td>
-            <td>${entry.endTime}</td>
-            <td>${getEntryTypeText(entry.entryType)}</td>
-            <td><button class="delete-entry" data-index="${index}">⌫</button></td>
-        `;
-        entriesList.appendChild(row);
-    });
-
-    const entriesCountElement = document.getElementById("entries-count");
-    entriesCountElement.textContent = entries.length; // Update the count of entries
-
-    const deleteButtons = document.querySelectorAll(".delete-entry");
-    deleteButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            const index = parseInt(button.getAttribute("data-index"));
-            
-            Swal.fire({
-                icon: 'warning',
-                title: 'Delete Entry?',
-                text: 'Are you sure you want to delete this entry?',
-                showCancelButton: true,
-                confirmButtonText: 'Delete',
-                cancelButtonText: 'Cancel',
-                confirmButtonColor: '#e74c3c',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    entries.splice(index, 1);
-                    updateEntriesList();
-                    saveEntriesToLocalStorage();
-                }
-            });
-        });
-    });
-
-    saveEntriesToLocalStorage();
-}
-
 const deleteAllEntriesButton = document.getElementById("delete-all-entries");
 
+// Event listener for the "Delete All Entries" button
 deleteAllEntriesButton.addEventListener("click", () => {
     Swal.fire({
         icon: 'warning',
@@ -245,6 +303,7 @@ deleteAllEntriesButton.addEventListener("click", () => {
     });
 });
 
+// Code for saving and loading entries from local storage
 function saveEntriesToLocalStorage() {
     localStorage.setItem("entries", JSON.stringify(entries));
 }
@@ -260,6 +319,7 @@ function loadEntriesFromLocalStorage() {
     showWebsiteUpdateReminder();
 }
 
+// Code for showing the website update reminder
 function showWebsiteUpdateReminder() {
     const popupSize = Cookies.get('popupSize');
 
@@ -268,7 +328,7 @@ function showWebsiteUpdateReminder() {
         Swal.fire({
             icon: 'info',
             title: 'Website Update',
-            html: 'We have made changes to the website. For correct calculations, please consider clearing your data and re-entering your entries.',
+            html: 'We have recently updated our website. We apologize for any inconvenience this may cause. If you encounter any calculation issues, please consider re-entering your entries for accurate results.',
             confirmButtonText: 'Dismiss',
         });
 
@@ -288,7 +348,7 @@ function showWebsiteUpdateReminder() {
         const notificationContent = document.querySelector('.notification-content');
         notificationContent.innerHTML = `
             <h3>Website Update</h3>
-            <p>We have made changes to the website. For correct calculations, please consider clearing your data and re-entering your entries.</p>
+            <p>We have recently updated our website. We apologize for any inconvenience this may cause. If you encounter any calculation issues, please consider re-entering your entries for accurate results.</p>
             <button id="close-popup">Dismiss</button>
         `;
 
@@ -298,10 +358,9 @@ function showWebsiteUpdateReminder() {
             notificationPopup.style.display = 'none';
         });
 
-        // // Add any additional styles or customizations to the notification pop-up here
+        // Add any additional styles or customizations to the notification pop-up here
         // notificationPopup.style.maxWidth = '300px'; // Adjust the max-width as needed
         // notificationPopup.style.backgroundColor = '#f0f0f0'; // Adjust the background color as needed
-
     }
 }
 
