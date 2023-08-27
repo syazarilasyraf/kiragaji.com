@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <meta http-equiv="refresh" content="0;URL=maintenance.html" />
+  <!-- <meta http-equiv="refresh" content="0;URL=maintenance.html" /> -->
   <head>
     <title>Kira Gaji | Your Personal Earning Tracker</title>
     <meta charset="utf-8" />
@@ -31,6 +31,9 @@
     <link rel="stylesheet" href="purged.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>        
+    <!-- Include Cookies (js-cookie) -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3"></script>
+    <!-- <script src="webreminder.js"></script> -->
   </head>
   <body>
     <div class="content">
@@ -190,122 +193,19 @@
           </div>
         </div>
       </section>
-      <!-- <div class="mb-3">
-              <label for=""
-                >Open link in new Tab
-                <span
-                  class="bg-yellow-700 text-white text-xs px-2 ml-2 py-1 rounded-full"
-                  >NEW</span
-                ></label
-              >
-              <div
-                value="0"
-                class="flex justify-between items-center cursor-pointer"
-                data-v-0268a9b0
-              >
-                <div
-                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
-                  data-v-0268a9b0
-                >
-                  <div
-                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
-                    data-v-0268a9b0
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="">Dark Mode</label>
-              <div
-                value="0"
-                class="flex justify-between items-center cursor-pointer"
-                data-v-0268a9b0
-              >
-                <div
-                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
-                  data-v-0268a9b0
-                >
-                  <div
-                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
-                    data-v-0268a9b0
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="">Transparent Background</label>
-              <div
-                value="0"
-                class="flex justify-between items-center cursor-pointer"
-                data-v-0268a9b0
-              >
-                <div
-                  class="w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out"
-                  data-v-0268a9b0
-                >
-                  <div
-                    class="bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
-                    data-v-0268a9b0
-                  ></div>
-                </div>
-              </div>
-            </div> -->
-      <script>
-        // Get all collapse buttons and their corresponding content
-        const collapseButtons = document.querySelectorAll('.collapse-button');
-        const collapseContents = document.querySelectorAll('.collapse-content');
-    
-        // Add event listeners for each collapse button
-        collapseButtons.forEach((collapseButton, index) => {
-          collapseButton.addEventListener('click', () => {
-            if (collapseContents[index].classList.contains('collapsed')) {
-              collapseContents[index].classList.remove('collapsed');
-            } else {
-              collapseContents[index].classList.add('collapsed');
-            }
-          });
-        });
 
-                // Find the #rest-hour select element
-        const restHourSelect = document.getElementById("rest-hour");
+      <!-- Bell icon -->
+      <div id="bell-icon" class="bell-icon">
+          <img src="assets/bell.png" alt="Bell Icon">
+      </div>
 
-        // Add an event listener to detect changes in the selected option
-        restHourSelect.addEventListener("change", () => {
-          const selectedOption = restHourSelect.value;
+      <!-- Notification pop-up container (hidden by default) -->
+      <div id="notification-popup" class="notification-popup">
+          <div class="notification-content"></div>
+      </div>
+  
+      <script src="cstmhr.js"></script>
 
-          if (selectedOption === "custom_hour") {
-            // When "Custom hour" is selected, show a SweetAlert pop-up
-            Swal.fire({
-              title: "Custom Hour Deduction",
-              text: "Enter the number of hours to deduct:",
-              input: "number",
-              inputAttributes: {
-                min: 0, // Set the minimum value to 0
-                step: 0.5, // Set the step increment to 0.5 hours (adjust as needed)
-              },
-              showCancelButton: true,
-              confirmButtonText: "Deduct",
-              cancelButtonText: "Cancel",
-              inputValidator: (value) => {
-                if (value < 0) {
-                  return "Please enter a valid number of hours (0 or greater).";
-                }
-              },
-            }).then((result) => {
-              if (result.isConfirmed) {
-                const customHours = parseFloat(result.value);
-                // Handle the custom hour deduction here
-                // You can use the 'customHours' value as needed
-                // For example, update the total salary based on this deduction
-              } else {
-                // User canceled the operation
-              }
-              // Reset the select element to its default option
-              restHourSelect.value = "1_hour";
-            });
-          }
-        });
-        </script>
     </div>
 
     <script src="output.js"></script>

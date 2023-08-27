@@ -540,3 +540,47 @@ select option {
   width: 0.75rem;
   border-radius: 9999px;
 }
+
+/* Bell icon styles */
+.bell-icon {
+  width: 64px; 
+  height: 64px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 999;
+}
+
+/* Notification pop-up styles */
+.notification-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  max-width: 300px;
+  display: none;
+  z-index: 999;
+}
+
+.notification-content h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.notification-content p {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.notification-content button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  border-radius: 0.25rem;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}

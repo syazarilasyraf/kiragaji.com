@@ -75,8 +75,13 @@ calculateSalaryButton.addEventListener("click", () => {
             }
         });
     } else {
-        // Default deduction only if it's not "sunday_holiday" and not "custom_hour"
-        const defaultDeduction = (restHourValue !== "sunday_holiday") ? 1 : 0;
+        // Determine the default deduction based on the selected entry type
+        const entryTypeSelect = document.getElementById("entry-type");
+        const selectedEntryType = entryTypeSelect.value;
+
+        // Deduct 1 hour by default for all types except "sunday_holiday"
+        const defaultDeduction = selectedEntryType !== "sunday_holiday" ? 1 : 0;
+
         calculateSalary(hourlyRate, defaultDeduction);
     }
 });
@@ -249,6 +254,54 @@ function loadEntriesFromLocalStorage() {
     if (storedEntries) {
         entries = JSON.parse(storedEntries);
         updateEntriesList();
+    }
+
+    // Show the reminder pop-up
+    showWebsiteUpdateReminder();
+}
+
+function showWebsiteUpdateReminder() {
+    const popupSize = Cookies.get('popupSize');
+
+    if (!popupSize) {
+        // First-time visit, show the larger pop-up
+        Swal.fire({
+            icon: 'info',
+            title: 'Website Update',
+            html: 'We have made changes to the website. For correct calculations, please consider clearing your data and re-entering your entries.',
+            confirmButtonText: 'Dismiss',
+        });
+
+        // Set a cookie to remember that the user has seen the pop-up
+        Cookies.set('popupSize', 'large', { expires: 365 }); // Cookie expires in 1 year
+    } else {
+        // Returning user, show the smaller pop-up with the notification content
+        const bellIcon = document.getElementById('bell-icon');
+        const notificationPopup = document.getElementById('notification-popup');
+
+        // Show the notification pop-up when the bell icon is clicked
+        bellIcon.addEventListener('click', function () {
+            notificationPopup.style.display = 'block';
+        });
+
+        // Access the notification content and set your notification message
+        const notificationContent = document.querySelector('.notification-content');
+        notificationContent.innerHTML = `
+            <h3>Website Update</h3>
+            <p>We have made changes to the website. For correct calculations, please consider clearing your data and re-entering your entries.</p>
+            <button id="close-popup">Dismiss</button>
+        `;
+
+        // Close the notification pop-up when the close button is clicked
+        const closePopup = document.getElementById('close-popup');
+        closePopup.addEventListener('click', function () {
+            notificationPopup.style.display = 'none';
+        });
+
+        // // Add any additional styles or customizations to the notification pop-up here
+        // notificationPopup.style.maxWidth = '300px'; // Adjust the max-width as needed
+        // notificationPopup.style.backgroundColor = '#f0f0f0'; // Adjust the background color as needed
+
     }
 }
 
