@@ -5,7 +5,7 @@ function getEntryTypeText(entryType) {
     } else if (entryType === "overtime") {
         return "OT";
     } else if (entryType === "sunday_holiday") {
-        return "Sun/PH";
+        return "Cuti";
     }
     return "";
 }
@@ -76,8 +76,8 @@ function calculateSalary(hourlyRate, customRestHourDeduction) {
     // Show a confirmation popup
     Swal.fire({
         icon: 'info',
-        title: 'Total Salary',
-        text: `Your total salary is RM${totalSalary.toFixed(2)}`,
+        title: 'Jumlah Gaji', // Total Salary
+        text: `Jumlah gaji adalah RM${totalSalary.toFixed(2)}`, // Your total salary is
     });
 }
 
@@ -90,9 +90,9 @@ calculateSalaryButton.addEventListener("click", () => {
     // Validate the hourly rate
     if (isNaN(hourlyRate)) {
         Swal.fire({
-            icon: 'error',
-            title: 'Invalid Hourly Rate',
-            text: 'Please enter a valid hourly rate.',
+            icon: 'error', // error
+            title: 'Tiada Kadar Per-Jam', // Invalid Hourly Rate
+            text: 'Sila isikan kadar per-jam yang sah', // Please enter a valid hourly rate.
         });
         return;
     }
@@ -101,8 +101,8 @@ calculateSalaryButton.addEventListener("click", () => {
     if (entries.length === 0) {
         Swal.fire({
             icon: 'info',
-            title: 'No Entries',
-            text: 'There are no entries to calculate.',
+            title: 'Tiada entri', // No Entries
+            text: 'Tiada entri untuk dikira.', // There are no entries to calculate.
         });
         return;
     }
@@ -188,12 +188,12 @@ function updateEntriesList() {
             const index = parseInt(button.getAttribute("data-index"));
     
             Swal.fire({
-                icon: 'warning',
-                title: 'Delete Entry?',
-                text: 'Are you sure you want to delete this entry?',
+                icon: 'warning', // warning
+                title: 'Padam entri?', // Delere Entry?
+                text: 'Adakah anda pasti mahu memadamkan entri ini?', // Are you sure you want to delete this entry?
                 showCancelButton: true,
-                confirmButtonText: 'Delete',
-                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Padam', // Delete
+                cancelButtonText: 'Batal', // Cancel
                 confirmButtonColor: '#e74c3c',
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -234,36 +234,36 @@ addEntryButton.addEventListener("click", () => {
     // Check for missing or invalid input fields
     if (!date) {
         Swal.fire({
-            icon: 'error',
-            title: 'Missing Date',
-            text: 'Please enter a valid date.',
+            icon: 'error', // error
+            title: 'Tiada Tarikh', // Missing Date
+            text: 'Sila pilih tarikh terlebih dahulu.', // Please enter a valid date.
         });
         return;
     }
 
     if (!startTime) {
         Swal.fire({
-            icon: 'error',
-            title: 'Missing Start Time',
-            text: 'Please enter a valid start time.',
+            icon: 'error', // error
+            title: 'Tiada Masa Mula', // Missing Start Time
+            text: 'Sila pilih Masa Mula terlebih dahulu', // Please enter a vaid start time.
         });
         return;
     }
 
     if (!endTime) {
         Swal.fire({
-            icon: 'error',
-            title: 'Missing End Time',
-            text: 'Please enter a valid end time.',
+            icon: 'error', // error
+            title: 'Tiada Masa Tamat', // Missing End Time
+            text: 'Sila pilih Masa Tamat terlebih dahulu', // Please enter a valid end time.
         });
         return;
     }
 
     if (!entryType) {
         Swal.fire({
-            icon: 'error',
-            title: 'Missing Entry Type',
-            text: 'Please choose an entry type.',
+            icon: 'error', // error
+            title: 'Tiada pilihan', // Missing Entry Type
+            text: 'Sila pilih jenis pilihan terlebih dahulu.', // Please choose an entry type
         });
         return;
     }
@@ -274,9 +274,9 @@ addEntryButton.addEventListener("click", () => {
     
     // Show success pop-up
     Swal.fire({
-        icon: 'success',
-        title: 'Entry Added',
-        text: 'The entry has been successfully added!',
+        icon: 'success', // success
+        title: 'Entri Ditambah', // Entry Added
+        text: 'Entri telah berjaya ditambah!', // The entry has been successfully added!
         showConfirmButton: false,
         timer: 1000,
     });
@@ -287,12 +287,12 @@ const deleteAllEntriesButton = document.getElementById("delete-all-entries");
 // Event listener for the "Delete All Entries" button
 deleteAllEntriesButton.addEventListener("click", () => {
     Swal.fire({
-        icon: 'warning',
-        title: 'Delete All Entries?',
-        text: 'Are you sure you want to delete all entries?',
+        icon: 'warning', // warning
+        title: 'Padam semua entri?', // Delete All Entries?
+        text: 'Adakah anda pasti mahu memadamkan semua entri?', // Are you sure you want to delete all entries?
         showCancelButton: true,
-        confirmButtonText: 'Delete All',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Padam semua', // Delete All
+        cancelButtonText: 'Batal', // Cancel
         confirmButtonColor: '#e74c3c',
     }).then((result) => {
         if (result.isConfirmed) {
@@ -327,9 +327,9 @@ function showWebsiteUpdateReminder() {
         // First-time visit, show the larger pop-up
         Swal.fire({
             icon: 'info',
-            title: 'Website Update',
-            html: 'We have recently updated our website. We apologize for any inconvenience this may cause. If you encounter any calculation issues, please consider re-entering your entries for accurate results.',
-            confirmButtonText: 'Dismiss',
+            title: 'Informasi',
+            html: 'Klik kotak [ + ] pada bahagian "INFORMASI" untuk cara penggunaan laman web ini.',
+            confirmButtonText: 'Okay', // Dismiss
         });
 
         // Set a cookie to remember that the user has seen the pop-up
@@ -347,9 +347,9 @@ function showWebsiteUpdateReminder() {
         // Access the notification content and set your notification message
         const notificationContent = document.querySelector('.notification-content');
         notificationContent.innerHTML = `
-            <h3>Website Update</h3>
-            <p>We have recently updated our website. We apologize for any inconvenience this may cause. If you encounter any calculation issues, please consider re-entering your entries for accurate results.</p>
-            <button id="close-popup">Dismiss</button>
+            <h3>INFORMASI</h3>
+            <p>Klik kotak [ + ] pada bahagian "INFORMASI" untuk cara penggunaan laman web ini.</p>
+            <button id="close-popup">Tutup</button>
         `;
 
         // Close the notification pop-up when the close button is clicked
